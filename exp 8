@@ -2,10 +2,10 @@ Invoke top-level Maven targets
 clean compile test package
 
 Execute Windows batch command
-java -cp target/jenkins-maven-app-1.0-SNAPSHOT.jar com.example.App
+java -cp target/flipkart-app-1.0-SNAPSHOT.jar com.mvit.App
 
 Execute Windows batch command
-wsl ansible-playbook -i /mnt/c/jenkins-projects/jenkins-maven-app/inventory.ini /mnt/c/jenkins-projects/jenkins-maven-app/deploy.yml
+wsl ansible-playbook -i "/mnt/c/Users/NAGASHREE K S/OneDrive/Desktop/Maven-project/flipkart-app/inventory.ini" "/mnt/c/Users/NAGASHREE K S/OneDrive/Desktop/Maven-project/flipkart-app/deploy.yml"
 
 
 
