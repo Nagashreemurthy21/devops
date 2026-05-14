@@ -1,0 +1,49 @@
+https://dev.azure.com/Vtu-devops-org/Azure-pipeline1
+
+
+
+maven project - push to git - pipeline- agent pool
+
+cd C:\azureagent\vsts-agent-win-x64-4.273.0
+
+Server URL	https://dev.azure.com/Vtu-devops-org
+Authentication Type	PAT
+Agent Pool	NagashreeAgent
+Agent Name	Nagashree K S
+
+token
+
+run ./config.cmd
+
+
+trigger:
+- main
+
+pool:
+  name: NagashreeAgent
+
+steps:
+
+- checkout: self
+  displayName: 'Checkout Source Code'
+
+- task: Maven@4
+  displayName: 'Build Maven Project'
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean package'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'Path'
+    jdkDirectory: 'C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot'
+    mavenVersionOption: 'Default'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Build Artifacts'
+  inputs:
+    PathtoPublish: 'target'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+
+
