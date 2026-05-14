@@ -1,0 +1,248 @@
+Program 12 — Steps to Execute
+Aim
+
+To build and deploy a complete DevOps pipeline using:
+
+GitHub
+Maven
+Azure DevOps
+Self-hosted Agent
+Step 1: Create Maven Project
+
+Open CMD and run:
+
+mvn archetype:generate -DgroupId=com.example -DartifactId=DevOpsFinalLab -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+Move inside project:
+
+cd DevOpsFinalLab
+
+Again move inside:
+
+cd DevOpsFinalLab
+
+Check files:
+
+dir
+
+You should see:
+
+pom.xml
+src
+Step 2: Delete Test Folder
+
+Run:
+
+rmdir /s /q src\test
+Step 3: Edit Java File
+
+Open:
+
+src\main\java\com\example\App.java
+
+Replace with:
+
+package com.example;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello from DevOps Final Lab!");
+    }
+}
+
+Save file.
+
+Step 4: Edit pom.xml
+
+Open pom.xml.
+
+Replace with:
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>DevOpsFinalLab</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
+
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.example.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
+Save file.
+
+Step 5: Build Maven Project
+
+Run:
+
+mvn clean package
+
+You should see:
+
+BUILD SUCCESS
+Step 6: Create Git Repository
+
+Run:
+
+git init
+git add .
+git commit -m "DevOps Final Lab"
+Step 7: Create GitHub Repository
+
+Go to:
+
+GitHub
+
+Create repository:
+
+DevOpsFinalLab
+Step 8: Connect GitHub Repo
+
+Run:
+
+git remote remove origin
+
+(ignore error if any)
+
+Then:
+
+git remote add origin https://github.com/Nagashreemurthy21/DevOpsFinalLab.git
+
+Push project:
+
+git branch -M main
+git push -u origin main --force
+Step 9: Create azure-pipelines.yml
+
+Inside project folder create:
+
+azure-pipelines.yml
+
+Paste:
+
+trigger:
+- main
+
+pool:
+  name: NagashreeAgent
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean package'
+
+- script: |
+    echo "Simulating deployment..."
+    mkdir deployed
+    copy target\*.jar deployed\
+    echo "Deployment successful!"
+  displayName: 'Simulate Deployment'
+
+- script: |
+    echo "Running the JAR file..."
+    java -jar deployed\*.jar
+  displayName: 'Run Application'
+
+Save file.
+
+Step 10: Push YAML File
+
+Run:
+
+git add .
+git commit -m "Added Azure pipeline"
+git push origin main
+Step 11: Start Self-Hosted Agent
+
+Open agent folder CMD.
+
+Run:
+
+.\run.cmd
+
+You should see:
+
+Listening for Jobs
+Step 12: Create Azure DevOps Project
+
+Open:
+
+Azure DevOps
+
+Create project:
+
+DevOpsFinalProject
+Step 13: Create Pipeline
+
+Go to:
+
+Pipelines
+→ Create Pipeline
+
+Choose:
+
+GitHub
+
+Select repository:
+
+DevOpsFinalLab
+
+Choose:
+
+Existing Azure Pipelines YAML file
+
+Select:
+
+azure-pipelines.yml
+Step 14: Run Pipeline
+
+Click:
+
+Run Pipeline
+
+Then:
+
+Run
+Step 15: Verify Output
+
+Pipeline should become green ✅
+
+Logs should show:
+
+Simulating deployment...
+Deployment successful!
+Running the JAR file...
+Hello from DevOps Final Lab!
+Step 16: Verify Deployment Folder
+
+Open:
+
+C:\azureagent\vsts-agent-win-x64-4.273.0\_work\1\s\deployed
+
+You should see .jar file.
+
+Result
+
+Successfully built and deployed a complete DevOps pipeline using Azure DevOps, Maven, GitHub, and self-hosted agent.
