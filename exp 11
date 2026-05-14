@@ -1,0 +1,196 @@
+Program 11 — Steps to Execute
+Aim
+
+To create a CI/CD pipeline using Azure DevOps with a self-hosted agent and simulate deployment using YAML pipelines.
+
+Requirements
+Java installed
+Maven installed
+Git installed
+GitHub account
+Azure DevOps account
+Self-hosted agent configured
+Step 1: Create Maven Project
+
+Open CMD and run:
+
+mvn archetype:generate -DgroupId=com.example -DartifactId=demoapp -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+Move into project:
+
+cd demoapp
+
+Check files:
+
+dir
+
+You should see:
+
+pom.xml
+src
+Step 2: Initialize Git Repository
+
+Run:
+
+git init
+git add .
+git commit -m "Maven project"
+Step 3: Create GitHub Repository
+
+Go to:
+
+GitHub
+
+Create repository:
+
+demoapp
+Step 4: Push Project to GitHub
+
+Connect remote repository:
+
+git remote add origin https://github.com/Nagashreemurthy21/demoapp.git
+
+Push files:
+
+git branch -M main
+git push -u origin main
+Step 5: Create Azure DevOps Project
+
+Open:
+
+Azure DevOps
+
+Create new project:
+
+Program11
+Step 6: Configure Self-Hosted Agent
+
+Go to:
+
+Project Settings
+→ Agent Pools
+
+Create pool:
+
+NagashreeAgent
+
+Download Windows agent ZIP.
+
+Extract to:
+
+C:\azureagent
+Step 7: Configure Agent
+
+Open CMD inside agent folder:
+
+config.cmd
+
+Provide:
+
+Server URL
+https://dev.azure.com/Vtu-devops-org
+Authentication Type
+PAT
+Pool Name
+NagashreeAgent
+Step 8: Start Agent
+
+Run:
+
+.\run.cmd
+
+You should see:
+
+Listening for Jobs
+Step 9: Install Maven
+
+Add Maven bin path to Environment Variables:
+
+C:\Program Files\apache-maven-3.9.15-bin\apache-maven-3.9.15\bin
+
+Verify Maven:
+
+mvn -version
+Step 10: Create YAML Pipeline File
+
+Inside project folder create:
+
+azure-pipelines.yml
+
+Add this code:
+
+trigger:
+- main
+
+pool:
+  name: NagashreeAgent
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'package'
+
+- script: |
+    echo "Simulating deployment..."
+    mkdir deployed
+    copy target\*.jar deployed\
+    echo "Deployment successful!"
+  displayName: 'Simulate Deployment'
+
+- script: |
+    echo "Contents of deployed folder:"
+    dir deployed
+  displayName: 'Verify Deployment Output'
+Step 11: Push YAML File
+
+Run:
+
+git add .
+git commit -m "Added pipeline YAML"
+git push origin main
+Step 12: Create Azure Pipeline
+
+Go to:
+
+Pipelines
+→ Create Pipeline
+
+Select:
+
+GitHub
+
+Choose repository:
+
+demoapp
+
+Select:
+
+Existing Azure Pipelines YAML file
+
+Choose:
+
+azure-pipelines.yml
+Step 13: Run Pipeline
+
+Click:
+
+Run Pipeline
+
+Then:
+
+Run
+Step 14: Verify Output
+
+Pipeline should show green tick ✅
+
+Check deployment folder:
+
+C:\azureagent\vsts-agent-win-x64-4.273.0\_work\1\s\deployed
+
+You should see:
+
+.jar file
+Result
+
+CI/CD pipeline using Azure DevOps and self-hosted agent was successfully created and deployment simulation was completed successfully.
