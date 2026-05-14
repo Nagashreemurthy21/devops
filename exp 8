@@ -4,10 +4,6 @@ clean compile test package
 Execute Windows batch command
 java -cp target/flipkart-app-1.0-SNAPSHOT.jar com.mvit.App
 
-Execute Windows batch command
-wsl ansible-playbook -i "/mnt/c/Users/NAGASHREE K S/OneDrive/Desktop/Maven-project/flipkart-app/inventory.ini" "/mnt/c/Users/NAGASHREE K S/OneDrive/Desktop/Maven-project/flipkart-app/deploy.yml"
-
-
 
 cd "/mnt/c/Users/NAGASHREE K S/OneDrive/Desktop/Maven-project/flipkart-app"
 vi deploy.yml
