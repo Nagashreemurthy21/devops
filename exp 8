@@ -7,16 +7,23 @@ java -cp target/flipkart-app-1.0-SNAPSHOT.jar com.mvit.App
 
 cd "/mnt/c/Users/NAGASHREE K S/OneDrive/Desktop/Maven-project/flipkart-app"
 vi deploy.yml
+
 ---
-- name: Deploy Application
+- name: Deploy JAR
   hosts: local
-  become: yes
+  become: true
 
   tasks:
-    - name: Install nginx
-      apt:
-        name: nginx
-        state: present
+
+    - name: Copy JAR file
+      copy:
+        src: /mnt/c/ProgramData/Jenkins/.jenkins/workspace/flipkart-app/target/flipkart-app-1.0-SNAPSHOT.jar
+        dest: /home/nagashree_k_s/ansible-lab/app.jar
+        mode: '0755'
+
+    - name: Run JAR file
+      shell: nohup java -jar /home/nagashree_k_s/ansible-lab/app.jar > /home/nagashree_k_s/ansible-lab/app.log 2>&1 &
+
 ansible-playbook -i inventory.ini deploy.yml
 
 pom.xml
@@ -64,3 +71,26 @@ pom.xml
   </build>
 
 </project>
+
+
+
+pom.xml
+<build>
+    <plugins>
+
+        <plugin>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.1.0</version>
+
+            <configuration>
+                <archive>
+                    <manifest>
+                        <addClasspath>true</addClasspath>
+                        <mainClass>com.mvit.App</mainClass>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
+
+    </plugins>
+</build>
