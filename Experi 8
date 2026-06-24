@@ -12,3 +12,10 @@
 
     - name: Run JAR file
       shell: nohup java -jar /home/your-username/ansible-lab/app.jar > app.log 2>&1 &
+
+
+
+
+src: /mnt/c/ProgramData/Jenkins/.jenkins/workspace/Maven-exp8/target/flipkart_app-1.0-SNAPSHOT.jar
+dest: /home/nagashree/ansible-lab/app.jar
+shell: nohup java -jar /home/nagashree/ansible-lab/app.jar > app.log 2>&1 &
